@@ -1,4 +1,4 @@
-Package: csv2vcard
+Package: vCardR
 Type: Package
 Title: Generate VCARD profile
 Version: 0.1.0
