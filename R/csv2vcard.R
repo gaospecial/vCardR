@@ -7,6 +7,8 @@
 #' @param email email
 #' @param birthday date of birth (YYYY-MM-DD)
 #' @param address address
+#' @param address_work work address
+#' @param address_home home address
 #'
 #' @return a VCARD
 #' @export
@@ -27,7 +29,14 @@
 #' con = file("contact.vcf", "a")
 #' lapply(cards, xfun::write_utf8, con = con)
 #' close(con)
-vcard = function(name, cell = NULL, org = NULL, email = NULL, birthday = NULL, address = NULL){
+vcard = function(name,
+                 cell = NULL,  # cell/mobile phone
+                 org = NULL, # organization/company
+                 email = NULL, # email
+                 birthday = NULL, # birthday
+                 address = NULL, # address, will pass to home address
+                 address_work = NULL, # work address
+                 address_home = NULL){ # home address
   # see defination at https://datatracker.ietf.org/doc/html/rfc2426#ref-VCARD
   content = glue::glue("BEGIN:VCARD",
                      "VERSION:3.0",
@@ -55,7 +64,7 @@ vcard = function(name, cell = NULL, org = NULL, email = NULL, birthday = NULL, a
   if(!is.null(email)){
     content = glue::glue(.sep = "\n",
                          content,
-                         "EMAIL:{email}")
+                         "EMAIL;TYPE=INTERNET:{email}")
   }
 
   if (!is.null(birthday)){
@@ -68,6 +77,18 @@ vcard = function(name, cell = NULL, org = NULL, email = NULL, birthday = NULL, a
     content = glue::glue(content,
                          .sep = "\n",
                          "ADR:{address}")
+  }
+
+  if (!is.null(address_home)){
+    content = glue::glue(content,
+                         .sep = "\n",
+                         "ADR;TYPE=HOME:{address_home}")
+  }
+
+  if (!is.null(address_work)){
+    content = glue::glue(content,
+                         .sep = "\n",
+                         "ADR;TYPE=WORK:{address_work}")
   }
 
   content = glue::glue(.sep = "\n",
