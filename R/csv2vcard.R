@@ -45,8 +45,8 @@ vcard = function(name,
   if (!is.null(name)){
     content = glue::glue(content,
                          .sep = "\n",
-                         "N:{name}",
-                         "FN:{name}")
+                         "N;CHARSET=utf-8:{name}",
+                         "FN;CHARSET=utf-8:{name}")
   }
 
   if (!is.null(cell)){
