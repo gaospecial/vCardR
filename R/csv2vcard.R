@@ -9,6 +9,8 @@
 #' @param address address
 #' @param address_work work address
 #' @param address_home home address
+#' @param qq qq number
+#' @param note note
 #'
 #' @return a VCARD
 #' @export
@@ -34,9 +36,12 @@ vcard = function(name,
                  org = NULL, # organization/company
                  email = NULL, # email
                  birthday = NULL, # birthday
+                 qq = NULL, ## qq number
                  address = NULL, # address, will pass to home address
                  address_work = NULL, # work address
-                 address_home = NULL){ # home address
+                 address_home = NULL,# home address
+                 note = NULL # note
+                 ){
   # see defination at https://datatracker.ietf.org/doc/html/rfc2426#ref-VCARD
   content = glue::glue("BEGIN:VCARD",
                      "VERSION:3.0",
@@ -73,6 +78,11 @@ vcard = function(name,
                          "BDAY:{birthday}")
   }
 
+  if (!is.null(qq)){
+    content = glue::glue(content,
+                         .sep = "\n",
+                         "X-QQ:{qq}")
+  }
   if (!is.null(address)){
     content = glue::glue(content,
                          .sep = "\n",
@@ -89,6 +99,12 @@ vcard = function(name,
     content = glue::glue(content,
                          .sep = "\n",
                          "ADR;TYPE=WORK:{address_work}")
+  }
+
+  if (!is.null(note)){
+    content = glue::glue(content,
+                         .sep = "\n",
+                         "NOTE;CHARSET=UTF-8:{note}")
   }
 
   content = glue::glue(.sep = "\n",
